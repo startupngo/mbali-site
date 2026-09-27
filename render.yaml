@@ -18,7 +18,7 @@ services:
       - key: BRAND_NAME
         value: Mbali
       - key: ADMIN_USER
-        value: zak
+        value: isaackanu15@gmail.com
       - key: ADMIN_PASSWORD
         sync: false
       - key: SITE_URL
