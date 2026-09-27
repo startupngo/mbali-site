@@ -18,8 +18,10 @@ services:
       - key: BRAND_NAME
         value: Mbali
       - key: ADMIN_USER
-        value: isaackanu15@gmail.com
+        sync: false
       - key: ADMIN_PASSWORD
         sync: false
       - key: SITE_URL
         sync: false
+      - key: NODE_ENV
+        value: production
