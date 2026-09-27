@@ -1,0 +1,16 @@
+<!-- title: Find a stockist | {{BRAND}} -->
+<!-- desc: Find shops, restaurants and online stores across the UK that stock East African food through {{BRAND}}. -->
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow"><svg class="ic"><use href="#i-map"/></svg>Stockist finder</p>
+    <h1 style="font-size:clamp(2rem,5vw,3.2rem)">Find East African food near you.</h1>
+    <p class="lead">Every business here is a trade member that stocks our range. Are you a shop or restaurant? <a href="/trade">Join free and get listed.</a></p>
+    <div class="dir-filter">
+      <label class="skip" for="dir-q">Search by town or name</label>
+      <input id="dir-q" type="search" placeholder="Town, postcode or business name…" data-dir-search>
+      <label class="skip" for="dir-type">Type</label>
+      <select id="dir-type" data-dir-type><option value="">All types</option><option value="shop">Shops</option><option value="restaurant">Restaurants &amp; cafes</option><option value="caterer">Caterers &amp; stalls</option><option value="online">Online stores</option><option value="wholesaler">Wholesalers</option></select>
+    </div>
+    <div class="dir-list" data-directory aria-live="polite"><div class="placeholder">Loading stockists…</div></div>
+  </div>
+</section>

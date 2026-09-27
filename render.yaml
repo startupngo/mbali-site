@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: east-african-distribution
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && node scripts/build-pages.js
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 22.13.0
+      - key: DATABASE_PATH
+        value: /data/sokoni.sqlite
+      - key: BRAND_NAME
+        value: Mbali
+      - key: ADMIN_USER
+        value: zak
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SITE_URL
+        sync: false

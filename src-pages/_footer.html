@@ -1,0 +1,33 @@
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h3>Trade news, once a month</h3>
+        <p>New brands, price lists and delivery days. No spam.</p>
+        <form class="news" data-api="/api/newsletter" aria-label="Newsletter">
+          <label class="hp" aria-hidden="true">Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+          <input type="hidden" name="audience" value="trade">
+          <label for="news-email" class="skip">Email address</label>
+          <input id="news-email" type="email" name="email" placeholder="you@yourbusiness.co.uk" required>
+          <button class="btn primary" type="submit">Sign up</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+      <div>
+        <h3>{{BRAND}}</h3>
+        <p>East African food brands, on UK shelves. Importer and distributor for Kenya, Uganda, Tanzania and Rwanda.</p>
+        <div class="foot-links">
+          <a href="/trade">Trade members</a><a href="/brands">For African brands</a><a href="/buyers">For retailers</a><a href="/directory">Find a stockist</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a>
+        </div>
+        <div class="foot-links" style="margin-top:12px">
+          <a href="#" aria-disabled="true">Instagram (coming soon)</a><a href="#" aria-disabled="true">WhatsApp (coming soon)</a>
+        </div>
+      </div>
+    </div>
+    <p class="small">{{BRAND}} · [Company name] Ltd · Registered food business: [council] (registration pending) · [address] · hello@[yourdomain].co.uk (placeholder). Brand names belong to their makers; {{BRAND}} is an independent UK importer and distributor.</p>
+  </div>
+</footer>
+<script src="/js/site.js"></script>
+</body>
+</html>

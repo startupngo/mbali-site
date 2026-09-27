@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — trade database</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="/css/site.css">
+<style>
+  .admin { padding: 28px 0 60px; }
+  .admin .wrap { max-width: 1400px; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 18px 0 24px; }
+  .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .kpi .v { font-size: 1.8rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.1; font-family: var(--display); }
+  .kpi .k { color: var(--ink-2); font-size: .85rem; }
+  .kpi.hot .v { color: var(--accent-ink); }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .tabs button { font: inherit; font-weight: 700; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; min-height: 44px; }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .toolbar input[type=search], .toolbar select { font: inherit; padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px; min-height: 44px; background: var(--surface); }
+  .toolbar input[type=search] { min-width: 240px; flex: 1 1 240px; }
+  .toolbar .spacer { flex: 1 1 auto; }
+  .tablewrap { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; white-space: nowrap; }
+  td.wrap-cell { white-space: normal; min-width: 220px; max-width: 360px; }
+  td.wrap-cell .clamp { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  th { position: sticky; top: 0; background: var(--surface-2); font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); z-index: 1; }
+  td select, td input { font: inherit; font-size: .9rem; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; min-height: 36px; background: var(--surface); }
+  td input.notes { min-width: 180px; }
+  td input[type=date] { min-width: 150px; }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--surface-2); font-weight: 700; font-size: .8rem; }
+  .pill.new, .pill.not-started { background: var(--yellow-soft); }
+  .pill.contacted, .pill.replied, .pill.sample-sent, .pill.samples, .pill.approved, .pill.terms, .pill.meeting { background: var(--accent-soft); color: var(--accent-ink); }
+  .pill.stocking, .pill.member, .pill.live, .pill.listed { background: var(--good-soft); color: var(--good); }
+  .pill.declined { background: var(--crit-soft); color: var(--crit); }
+  .pri { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; font-weight: 800; }
+  .pri.A { background: var(--accent); color: #fff; } .pri.B { background: var(--yellow-soft); } .pri.C { background: var(--surface-2); color: var(--ink-2); }
+  .empty { padding: 28px; color: var(--muted); text-align: center; }
+  .saved { color: var(--good); font-weight: 700; font-size: .85rem; margin-left: 6px; }
+  .mini { font: inherit; font-size: .85rem; font-weight: 700; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; }
+  .mini:hover { background: var(--surface-2); }
+  .import { display: inline-flex; align-items: center; gap: 8px; }
+  .import input[type=file] { font-size: .85rem; max-width: 220px; }
+  .msg { font-weight: 700; color: var(--good); }
+  .help { color: var(--ink-2); font-size: .9rem; margin: 6px 0 14px; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap" style="max-width:1400px">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">🗂️</span><span>ADMIN<small>trade database</small></span></a>
+    <nav class="nav" aria-label="Admin"><a href="/">View site</a><a class="cta" href="#" id="signout">Sign out</a></nav>
+  </div>
+</header>
+<main class="admin">
+  <div class="wrap">
+    <h1 style="font-size:1.8rem">Trade database</h1>
+    <p class="help">Prospects are the shops and restaurants to call. Trade members are the businesses that signed up. Change a status, owner or note and it saves straight away.</p>
+    <div class="kpis" id="kpis" aria-live="polite"></div>
+    <div class="tabs" role="tablist" id="tabs">
+      <button role="tab" aria-selected="true" data-table="prospects">Prospects to call</button>
+      <button role="tab" aria-selected="false" data-table="members">Trade members</button>
+      <button role="tab" aria-selected="false" data-table="brand_applications">Brand applications</button>
+      <button role="tab" aria-selected="false" data-table="enquiries">Buyers &amp; contact</button>
+      <button role="tab" aria-selected="false" data-table="newsletter">Newsletter</button>
+    </div>
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="Search name, town, email…" aria-label="Search">
+      <select id="f-status" aria-label="Filter by status"><option value="">All statuses</option></select>
+      <select id="f-priority" aria-label="Filter by priority" hidden><option value="">All priorities</option><option>A</option><option>B</option><option>C</option></select>
+      <select id="f-type" aria-label="Filter by type" hidden><option value="">All types</option><option value="shop">Shops</option><option value="restaurant">Restaurants</option><option value="community">Community</option><option value="wholesaler">Wholesalers</option><option value="other">Other</option></select>
+      <span class="spacer"></span>
+      <span class="import" id="importwrap" hidden><label class="mini" for="csvfile">Import CSV</label><input type="file" id="csvfile" accept=".csv,text/csv" hidden><span class="msg" id="importmsg"></span></span>
+      <a class="mini" id="export" href="/api/admin/prospects.csv">Export CSV</a>
+    </div>
+    <div class="tablewrap" id="tablewrap"><div class="empty">Loading…</div></div>
+  </div>
+</main>
+<script src="/js/admin.js"></script>
+</body>
+</html>

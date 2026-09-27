@@ -1,0 +1,46 @@
+<!-- title: For supermarket and wholesale buyers | {{BRAND}} -->
+<!-- desc: One supplier, one invoice, one contact for an East African food range — chilli oils, spice blends, tea and staples — with UK labelling, barcodes and supplier approval handled. -->
+<section class="section">
+  <div class="wrap">
+    <div class="two-col">
+      <div>
+        <p class="eyebrow"><svg class="ic"><use href="#i-cart"/></svg>For retailers, wholesalers and online grocers</p>
+        <h1 style="font-size:clamp(2rem,5vw,3.2rem)">One contact for a whole East African range.</h1>
+        <p class="lead">The world-foods aisle is growing 8% a year, and East Africa is the gap in it. We consolidate the brands people already buy in the diaspora into one compliant, barcoded, UK-stocked range.</p>
+        <p class="only-mobile"><a class="btn primary" href="#buyer-form">Go to the form ↓</a></p>
+        <div class="grid c2" style="margin-top:24px">
+          <div class="card"><svg class="ic"><use href="#i-doc"/></svg><h3>Compliance handled</h3><p class="label">UK labelling and allergen declarations, product specifications and import paperwork.</p></div>
+          <div class="card"><svg class="ic"><use href="#i-tag"/></svg><h3>Barcodes &amp; data</h3><p class="label">GS1 UK GTINs and product data in the format your systems expect.</p></div>
+          <div class="card"><svg class="ic"><use href="#i-shield"/></svg><h3>Supplier approval</h3><p class="label">SALSA in progress; BRCGS Storage &amp; Distribution on the roadmap for own-label work.</p></div>
+          <div class="card"><svg class="ic"><use href="#i-users"/></svg><h3>Built-in demand</h3><p class="label">A diaspora of 330,000+ in England and Wales, community groups and restaurants that already use these products.</p></div>
+        </div>
+        <h2 style="margin-top:36px;font-size:1.5rem">Where we can start</h2>
+        <div class="grid c3" style="margin-top:16px">
+          <div class="card step"><span class="n">1</span><h3>Online first</h3><p class="label">Long-tail listings where world foods perform best.</p></div>
+          <div class="card step"><span class="n">2</span><h3>Regional stores</h3><p class="label">Stores in London, Leicester, Birmingham, Manchester and Bristol where the communities live.</p></div>
+          <div class="card step"><span class="n">3</span><h3>Range extension</h3><p class="label">A curated East African bay alongside your Caribbean and West African lines.</p></div>
+        </div>
+      </div>
+      <div>
+        <form id="buyer-form" class="form" data-api="/api/enquiries" novalidate>
+          <label class="hp" aria-hidden="true">Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+          <input type="hidden" name="kind" value="buyer">
+          <h2 style="font-size:1.4rem">Talk to us</h2>
+          <div class="row">
+            <div class="field"><label for="organisation">Retailer or company</label><input id="organisation" name="organisation" type="text" required autocomplete="organization"><p class="error" aria-live="polite"></p></div>
+            <div class="field"><label for="role">Your role <span class="hint">(optional)</span></label><input id="role" name="role" type="text" placeholder="e.g. World foods buyer"></div>
+          </div>
+          <div class="row">
+            <div class="field"><label for="contact_name">Your name</label><input id="contact_name" name="contact_name" type="text" required autocomplete="name"><p class="error" aria-live="polite"></p></div>
+            <div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" required autocomplete="email"><p class="error" aria-live="polite"></p></div>
+          </div>
+          <div class="field"><label for="interest">What are you interested in? <span class="hint">(optional)</span></label><input id="interest" name="interest" type="text" placeholder="e.g. chilli oils for online, a trial in 20 stores"></div>
+          <div class="field"><label for="message">Message</label><textarea id="message" name="message" required placeholder="Tell us what you're looking at and when."></textarea><p class="error" aria-live="polite"></p></div>
+          <button class="btn primary big" type="submit"><svg class="ic"><use href="#i-handshake"/></svg>Send</button>
+          <p class="form-status" role="alert"></p>
+          <p class="hint">We reply within two working days. <a href="/privacy">Privacy notice</a>.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
