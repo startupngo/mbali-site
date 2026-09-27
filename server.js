@@ -184,7 +184,12 @@ admin.get('/:table.csv', (req, res) => {
   if (!store.TABLES[table]) return res.status(404).json({ ok: false, message: 'Unknown table' });
   const rows = store.list(table, { limit: 20000 });
   const cols = store.TABLES[table].columns;
-  const esc = (v) => { const s = v === null || v === undefined ? '' : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  const esc = (v) => {
+    let s = v === null || v === undefined ? '' : String(v);
+    // Neutralise CSV/formula injection: a leading =, +, -, @ (or tab/CR) can be read as a formula by Excel/Sheets.
+    if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
   const csv = [cols.join(','), ...rows.map((r) => cols.map((c) => esc(r[c])).join(','))].join('\n');
   res.set('Content-Type', 'text/csv; charset=utf-8');
   res.set('Content-Disposition', `attachment; filename="${cfg.BRAND.toLowerCase()}-${table}-${new Date().toISOString().slice(0, 10)}.csv"`);
@@ -203,10 +208,22 @@ admin.patch('/:table/:id', (req, res) => {
 });
 app.use('/api/admin', admin);
 app.get('/admin', basicAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
+// admin.html also lives under public/, which express.static would otherwise serve at this exact
+// path with no sign-in check at all — send it through the gated /admin route instead.
+app.get('/admin.html', (req, res) => res.redirect(301, '/admin'));
 
 // ---------- static site ----------
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'], maxAge: '1h' }));
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, 'public', '404.html')));
+
+// Catch-all error handler: never leak stack traces / internal file paths to the client; the JSON
+// API stays JSON on errors too (a bad body, an unexpected exception) instead of an HTML error page.
+app.use((err, req, res, next) => {
+  console.error('[error]', (err && err.stack) || err);
+  if (res.headersSent) return next(err);
+  const status = Number(err && (err.status || err.statusCode));
+  res.status(status >= 400 && status < 600 ? status : 500).json({ ok: false, message: 'Something went wrong. Please try again.' });
+});
 
 store.seedProspectsIfEmpty();
 app.listen(PORT, () => console.log(`${cfg.BRAND} site running at http://localhost:${PORT}  (database: ${store.DB_PATH})`));
