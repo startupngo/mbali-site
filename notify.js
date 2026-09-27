@@ -23,6 +23,9 @@ function getTransporter() {
 }
 
 async function notify(subject, lines) {
+  // Subject becomes an email header; strip any embedded CR/LF so a crafted form field
+  // (business name, message, etc.) can't inject extra headers.
+  subject = String(subject || '').replace(/[\r\n]+/g, ' ').slice(0, 200);
   const body = lines.join('\n');
   const t = getTransporter();
   if (!t) {
