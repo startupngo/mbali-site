@@ -58,10 +58,12 @@ function basicAuth(req, res, next) {
   const header = req.headers.authorization || '';
   const [scheme, encoded] = header.split(' ');
   if (scheme === 'Basic' && encoded) {
-    const [user, ...rest] = Buffer.from(encoded, 'base64').toString('utf8').split(':');
-    const pass = rest.join(':');
+    const [rawUser, ...rest] = Buffer.from(encoded, 'base64').toString('utf8').split(':');
+    const user = rawUser.trim().toLowerCase();
+    const pass = rest.join(':').trim();
+    const adminUser = ADMIN_USER.trim().toLowerCase();
     const ok = ADMIN_PASSWORD &&
-      user.length === ADMIN_USER.length && crypto.timingSafeEqual(Buffer.from(user), Buffer.from(ADMIN_USER)) &&
+      user.length === adminUser.length && crypto.timingSafeEqual(Buffer.from(user), Buffer.from(adminUser)) &&
       pass.length === ADMIN_PASSWORD.length && crypto.timingSafeEqual(Buffer.from(pass), Buffer.from(ADMIN_PASSWORD));
     if (ok) return next();
   }
